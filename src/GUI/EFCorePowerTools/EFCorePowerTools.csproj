@@ -142,14 +142,6 @@
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\lib\net46\Microsoft.VisualStudio.ProjectSystem.dll">
-      <Link>Microsoft.VisualStudio.ProjectSystem.dll</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\lib\net46\Microsoft.VisualStudio.ProjectSystem.VS.dll">
-      <Link>Microsoft.VisualStudio.ProjectSystem.VS.dll</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Dialogs\TableWarning_16x.png" />
     <Content Include="efpt\2.1.0\efpt.exe">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -750,4 +742,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <!-- A way to include all dlls from Nugets, based on: http://www.cazzulino.com/include-dlls-in-vsix.html -->
+  <Target Name="IncludeNuGetResolvedAssets" DependsOnTargets="ResolveNuGetPackageAssets">
+	<ItemGroup>
+	  <VSIXCopyLocalReferenceSourceItem Include="@(ReferenceCopyLocalPaths)"  />
+	</ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);IncludeNuGetResolvedAssets</GetVsixSourceItemsDependsOn>
+  </PropertyGroup>  
 </Project>
